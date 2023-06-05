@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import csv
+import time
 from utils.QueryUtil import QueryUtil
 from utils.WriteUtil import WriteUtil
 
@@ -26,9 +27,7 @@ class CsvIngestionExample:
             for i, row in enumerate(csvreader, 1):
                 record = {
                     'Dimensions': [
-                        {'Name': row[0], 'Value': row[1]},
-                        {'Name': row[2], 'Value': row[3]},
-                        {'Name': row[4], 'Value': row[5]},
+                        {'Name': row[0], 'Value': row[1]}
                     ],
                     'Time': str(int(current_time) - (i * 50))
                 }
@@ -39,14 +38,14 @@ class CsvIngestionExample:
                         'MeasureValueType': "MULTI",
                         'MeasureValues': [
                             {
-                                "Name": row[8],
-                                "Value": row[9],
-                                "Type": row[10],
+                                "Name": row[2],
+                                "Value": row[3],
+                                "Type": row[4],
                             },
                             {
-                                "Name": row[11],
-                                "Value": row[12],
-                                "Type": row[13],
+                                "Name": row[5],
+                                "Value": row[6],
+                                "Type": row[7],
                             }
                         ]
                     }
@@ -89,10 +88,14 @@ class CsvIngestionExample:
             # Create base table and ingest records
             self.write_util.create_database(self.database_name)
             self.write_util.create_table(self.database_name, self.table_name)
-            self.bulk_write_records(csv_file_path)
-            self.run_sample_queries()
+            i = 1
+            while i == 1:
+                self.bulk_write_records(csv_file_path)
+                time.sleep(10)
+            #self.run_sample_queries()
 
         finally:
             if not self.skip_deletion:
                 self.write_util.delete_table(self.database_name, self.table_name)
                 self.write_util.delete_database(self.database_name)
+
