@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import csv
+import random
 import time
 from utils.QueryUtil import QueryUtil
 from utils.WriteUtil import WriteUtil
@@ -19,6 +20,7 @@ class CsvIngestionExample:
     def bulk_write_records(self, filepath):
         with open(filepath, 'r') as csvfile:
             csvreader = csv.reader(csvfile)
+            price = 120
 
             records = []
             current_time = WriteUtil.current_milli_time()
@@ -44,7 +46,7 @@ class CsvIngestionExample:
                             },
                             {
                                 "Name": row[5],
-                                "Value": row[6],
+                                "Value": str(random.randint(90,150)),
                                 "Type": row[7],
                             }
                         ]
